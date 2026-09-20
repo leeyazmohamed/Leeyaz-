@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leeyaz Mohamed K | AI Full-Stack Engineer</title>
+    <meta name="description" content="Portfolio of Leeyaz Mohamed K, Azure AI Apps Developer and AI Full-Stack Engineer specializing in LLMs, RAG pipelines, and agentic workflows.">
+    
+    <!-- Open Graph tags for rich previews -->
+    <meta property="og:title" content="Leeyaz Mohamed K | AI Full-Stack Engineer">
+    <meta property="og:description" content="Portfolio showcasing AI-native applications, RAG pipelines, and agentic workflows.">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-main: #f0f0f0;
+            --text-muted: #a0a0a0;
+            --accent: #c5a059;
+            --accent-glow: rgba(197, 160, 89, 0.4);
+            --glass-bg: rgba(15, 15, 20, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            background-color: transparent;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        /* The canvas acts as a fixed background behind everything */
+        .canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: -1;
+            background: #000;
+        }
+        
+        .canvas-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Adding a subtle gradient overlay to ensure text readability over bright image frames */
+            background: radial-gradient(circle at center, rgba(5,5,5,0.4) 0%, rgba(5,5,5,0.8) 100%);
+            pointer-events: none;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Content Wrapper dictates scroll height */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20vh;
+        }
+
+        section {
+            min-height: 100vh;
+            width: 100%;
+            max-width: 1200px;
+            padding: 120px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Spacing out sections to let the background animation shine */
+            margin-bottom: 20vh;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+
+        h2.section-title {
+            font-size: 2.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 4rem;
+            text-align: center;
+            background: linear-gradient(90deg, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-card {
+            background: rgba(10, 10, 12, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--text-main);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+
+        .btn-outline {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-main);
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Hero */
+        .hero {
+            align-items: center;
+            text-align: center;
+            margin-top: 15vh;
+            margin-bottom: 30vh;
+        }
+        .hero h1 {
+            font-size: clamp(3.5rem, 8vw, 6.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .hero h3 {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .hero p {
+            max-width: 700px;
+            font-size: 1.2rem;
+            color: #d0d0d0;
+            margin: 0 auto;
+            margin-bottom: 2rem;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .skill-category h4 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .skill-tag {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .skill-tag:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: var(--glass-border);
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 50px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 8px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        .timeline-date {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            font-family: var(--font-display);
+        }
+        .timeline-item ul {
+            padding-left: 20px;
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        .timeline-item li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* ── Featured Projects Grid ─────────────────────────────── */
+        .projects-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 25px;
+            align-items: stretch;
+        }
+        .projects-grid > .project-card {
+            width: calc(33.333% - 17px);
+        }
+
+        /* ── Project Card Shell ──────────────────────────────────── */
+        /* Override glass-card padding for project cards so the image
+           bleed calc is always exact and padding is controlled here. */
+        .project-card.glass-card {
+            padding: 0;                  /* image fills top, body has its own padding */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;            /* clips the image perfectly inside border-radius */
+        }
+
+        /* ── Project Card Image ──────────────────────────────────── */
+        .project-img-wrap {
+            width: 100%;
+            flex-shrink: 0;
+            position: relative;
+            height: 160px;
+            overflow: hidden;
+            border-radius: 0;            /* card itself has border-radius */
+        }
+        .project-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .project-card:hover .project-img-wrap img {
+            transform: scale(1.06);
+        }
+        .project-img-wrap::after {
+            content: '';
+            position: absolute;
+            inset: auto 0 0 0;
+            height: 60%;
+            background: linear-gradient(to top, rgba(10,10,12,0.95) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        /* Logo variant — white bg, contain */
+        .project-img-wrap.logo-style {
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .project-img-wrap.logo-style img {
+            object-fit: contain;
+            padding: 24px;
+        }
+        .project-img-wrap.logo-style::after { display: none; }
+
+        /* ── Project Card Body ───────────────────────────────────── */
+        .project-body {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;                /* stretches so button always pins to bottom */
+            padding: 20px;
+            gap: 0;
+        }
+        .project-card h3 {
+            font-size: 1.15rem;
+            line-height: 1.35;
+            margin-bottom: 12px;
+            color: #fff;
+            /* 2-line clamp keeps row-partner titles the same height */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 3.6em;           /* reserves 2 lines even for short titles */
+        }
+        .project-card p {
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: var(--text-muted);
+            margin-bottom: 0;
+            /* 3-line clamp keeps description blocks uniform height */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 4.95em;          /* 3 lines × 1.65 line-height */
+        }
+        .project-card .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .project-card .impact-line {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 14px;
+            line-height: 1.4;
+            min-height: 2.8em;           /* keeps rows consistent when present */
+        }
+        /* Push button to the very bottom of its card body */
+        .project-links {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+        .project-links .btn-outline {
+            padding: 9px 20px;
+            font-size: 0.88rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Responsive breakpoints ──────────────────────────────── */
+        @media (max-width: 1024px) {
+            .projects-grid > .project-card {
+                width: calc(50% - 12.5px);
+            }
+        }
+        @media (max-width: 820px) {
+            .projects-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .projects-grid > .project-card {
+                width: 100%;
+                max-width: 450px;
+            }
+            .project-card h3   { min-height: unset; -webkit-line-clamp: unset; }
+            .project-card p    { min-height: unset; -webkit-line-clamp: unset; }
+            .project-card .impact-line { min-height: unset; }
+        }
+        
+        /* Contact Form */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 18px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--accent);
+            background: rgba(0,0,0,0.6);
+        }
+        .contact-info {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .contact-info p {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+        }
+        .contact-info a {
+            color: var(--accent);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        .contact-info a:hover {
+            color: #fff;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+        .navbar.scrolled {
+            padding: 15px 50px;
+            background: rgba(10, 10, 12, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .nav-brand {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+        .nav-links li a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .nav-links li a:hover {
+            color: var(--accent);
+        }
+        /* Logo Marquee */
+        .logo-marquee-wrapper {
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 30px 0;
+            margin-bottom: 50px;
+            /* Fade edges for premium feel */
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+        }
+        .logo-marquee-track {
+            display: flex;
+            width: max-content;
+            animation: logo-scroll 35s linear infinite;
+        }
+        .logo-marquee-track:hover {
+            animation-play-state: paused;
+        }
+        .logo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 20px 30px;
+            margin: 0 10px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            min-width: 90px;
+            transition: background 0.3s, border-color 0.3s, transform 0.3s;
+            cursor: default;
+        }
+        .logo-item:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(197, 160, 89, 0.3);
+            transform: translateY(-4px);
+        }
+        .logo-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            filter: brightness(0.9);
+        }
+        .logo-item span {
+            font-size: 0.72rem;
+            font-family: var(--font-body);
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        @keyframes logo-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Marquee Animation */
+        .marquee-wrapper {
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 20px 0;
+            margin-top: 20px;
+        }
+        .marquee-content {
+            display: flex;
+            width: max-content;
+            animation: scroll-marquee 40s linear infinite;
+        }
+        .marquee-content:hover {
+            animation-play-state: paused;
+        }
+        .marquee-content .glass-card {
+            width: 400px;
+            margin: 0 15px;
+            white-space: normal;
+            flex-shrink: 0;
+            /* Disable reveal animation on marquee items so they don't pop in weirdly */
+            opacity: 1;
+            transform: none;
+        }
+        @keyframes scroll-marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: rgba(10, 10, 12, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+        .whatsapp-float:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: var(--accent);
+            box-shadow: 0 15px 40px var(--accent-glow);
+        }
+        .whatsapp-float svg {
+            width: 32px;
+            height: 32px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+        .whatsapp-float:hover svg {
+            transform: scale(1.1);
+        }
+
+        /* Scroll Animations (Reveal) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Mobile Nav & Hamburger */
+        .hamburger {
+            display: none;
+            font-size: 1.8rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            section { padding: 80px 20px; margin-bottom: 10vh; }
+            .hero h1 { font-size: 3.5rem; }
+            .timeline-item { padding-left: 40px; }
+            .timeline::before { left: 10px; }
+            .timeline-item::before { left: 4px; }
+            .glass-card { padding: 30px 20px; }
+            .navbar { padding: 20px; }
+            .navbar.scrolled { padding: 15px 20px; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 10, 12, 0.95);
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                transform: translateY(-150%);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s ease;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+            .whatsapp-float svg {
+                width: 26px;
+                height: 26px;
+            }
+        }
+        @media (max-width: 480px) {
+            h2.section-title { font-size: 2rem; margin-bottom: 2rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .btn { width: 100%; padding: 12px 0; text-align: center; }
+            .btn-group { flex-direction: column; width: 100%; gap: 10px; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .logo-marquee-wrapper { padding: 15px 0; }
+            .logo-item { min-width: 80px; padding: 15px 20px; }
+            .timeline-item { padding-left: 30px; margin-bottom: 40px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand">LEEYAZ</div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects-section">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/918778156877" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 2.01A13.97 13.97 0 0 0 2 16.03a13.88 13.88 0 0 0 2.22 7.6L2.3 29.58l6.17-1.61a14.07 14.07 0 0 0 7.54 2.16h.01C23.72 30.14 30 23.83 30 16.03S23.72 2.01 16 2.01zm0 25.75h-.01a11.75 11.75 0 0 1-5.96-1.62l-.43-.25-4.43 1.16 1.18-4.32-.28-.44A11.53 11.53 0 0 1 4.38 16.03c0-6.42 5.22-11.64 11.64-11.64s11.65 5.23 11.65 11.64S22.42 27.76 16 27.76zm6.39-8.73c-.35-.17-2.07-1.02-2.39-1.14-.32-.12-.55-.17-.79.17-.23.35-.91 1.14-1.11 1.37-.2.23-.41.26-.76.09-1.92-.93-3.32-1.98-4.63-4.18-.15-.26.15-.24.49-.9.18-.35.09-.67-.04-.84-.12-.17-.79-1.9-.99-2.58-.2-.67-.4-.58-.55-.59H10.7c-.24 0-.61.09-.93.43-.32.35-1.22 1.19-1.22 2.91s1.25 3.38 1.43 3.61c.17.23 2.47 3.77 5.96 5.28 2.22.96 2.97 1.05 4.14.88.94-.14 2.07-.84 2.36-1.66.29-.81.29-1.51.2-1.66-.09-.14-.32-.23-.67-.41z"/>
+        </svg>
+    </a>
+
+    <div class="canvas-container">
+        <canvas id="animation-canvas"></canvas>
+    </div>
+
+    <div class="content-wrapper">
+        
+        <!-- 1. HERO SECTION -->
+        <section class="section hero reveal" id="home">
+            <h3>Azure AI Apps Developer</h3>
+            <h1>Leeyaz Mohamed K</h1>
+            <p>AI-native Full-Stack Engineer specializing in building production-grade LLM applications, RAG pipelines, and agentic workflows. Delivering robust, low-latency AI systems focused on accuracy and grounding.</p>
+            <div class="btn-group">
+                <a href="#projects-section" class="btn btn-primary">View My Work</a>
+                <a href="./Leeyaz_Mohamed_Resume.pdf" target="_blank" class="btn btn-outline">📄 Resume</a>
+                <a href="#contact" class="btn btn-outline">Contact Me</a>
+                <a href="tel:+918778156877" class="btn btn-outline">📞 Call Me</a>
+                <a href="https://linkedin.com/" target="_blank" class="btn btn-outline"><i class="fab fa-linkedin" style="margin-right: 6px;"></i>LinkedIn</a>
+            </div>
+        </section>
+
+        <!-- 2. ABOUT ME -->
+        <section class="section reveal" id="about">
+            <h2 class="section-title">About Me</h2>
+            <div class="glass-card">
+                <p>I am an AI-native Full-Stack Developer with 1.5+ years of experience engineering LLM-powered applications using Python, FastAPI, and Django. My expertise lies in designing scalable RAG architectures and orchestrating stateful agentic workflows leveraging LangChain and LangGraph.</p>
+                <p>I build intelligent, semantic search systems utilizing Azure AI Search, Azure Speech services, and advanced vector/graph databases including ChromaDB, Pinecone, and Neo4j. I integrate AI-native tools like GitHub Copilot, Cursor, and Claude to rapidly prototype, iterate, and deploy reliable solutions.</p>
+                <p>Beyond AI, I maintain a strong foundation in modern infrastructure, utilizing Docker, Kubernetes, Terraform, and CI/CD pipelines to ensure scalable, responsible, and low-latency cloud deployments.</p>
+            </div>
+        </section>
+
+        <!-- 3. TECHNICAL SKILLS -->
+        <section class="section reveal" id="skills">
+            <h2 class="section-title">Technical Expertise</h2>
+
+            <!-- Logo Marquee -->
+            <div class="logo-marquee-wrapper">
+                <div class="logo-marquee-track">
+                    <!-- Original set -->
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python"><span>Python</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript"><span>JavaScript</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML"><span>HTML5</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS"><span>CSS3</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"><span>Bootstrap</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL"><span>MySQL</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker"><span>Docker</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes"><span>Kubernetes</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" alt="Django" style="filter:invert(1) brightness(0.8);"><span>Django</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" alt="Azure"><span>Azure</span></div>
+                    <div class="logo-item">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color: #ccc;">
+                            <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.033 6.033 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.073zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.6667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805-4.7736 2.763a.7948.7948 0 0 0-.3928.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" />
+                        </svg>
+                        <span>Azure OpenAI</span>
+                    </div>
+                    <div class="logo-item">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="rgba(197,160,89,0.15)"/>
+                            <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="9" font-family="Inter,sans-serif" font-weight="700" fill="#c5a059">AI SEARCH</text>
+                        </svg>
+                        <span>AI Search</span>
+                    </div>
+                    <div class="logo-item">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="rgba(197,160,89,0.15)"/>
+                            <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="9" font-family="Inter,sans-serif" font-weight="700" fill="#c5a059">AI STUDIO</text>
+                        </svg>
+                        <span>AI Studio</span>
+                    </div>
+                    <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT"><span>ChatGPT</span></div>
+                    <div class="logo-item">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="rgba(197,160,89,0.15)"/>
+                            <text x="50%" y="38%" dominant-baseline="middle" text-anchor="middle" font-size="10" font-family="serif" font-weight="700" fill="#d4a96a">&#x25C9;</text>
+                            <text x="50%" y="68%" dominant-baseline="middle" text-anchor="middle" font-size="8" font-family="Inter,sans-serif" font-weight="600" fill="#c5a059">claude</text>
+                        </svg>
+                        <span>Claude.ai</span>
+                    </div>
+                    <div class="logo-item">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="rgba(197,160,89,0.15)"/>
+                            <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="800" fill="#c5a059">RAG</text>
+                        </svg>
+                        <span>RAG</span>
+                    </div>
+                    <!-- Duplicate set for seamless loop -->
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python"><span>Python</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript"><span>JavaScript</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML"><span>HTML5</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS"><span>CSS3</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"><span>Bootstrap</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL"><span>MySQL</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker"><span>Docker</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes"><span>Kubernetes</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" alt="Django" style="filter:invert(1) brightness(0.8);"><span>Django</span></div>
+                    <div class="logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" alt="Azure"><span>Azure</span></div>
+                    <div class="logo-item">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color: #ccc;">
+                            <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.033 6.033 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.073zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.6667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805-4.7736 2.763a.7948.7948 0 0 0-.3928.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" />
+                        </svg>
+                        <span>Azure OpenAI</span>
+                    </div>
+                    <div class="logo-item">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="rgba(197,160,89,0.15)"/>
+                            <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="9" font-family="Inter,sans-serif" font-weight="700" fill="#c5a059">AI SEARCH</text>
+                        </svg>
+                        <span>AI Search</span>
+                    </div>
+                    <div class="logo-item">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="rgba(197,160,89,0.15)"/>
+                            <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="9" font-family="Inter,sans-serif" font-weight="700" fill="#c5a059">AI STUDIO</text>
+                        </svg>
+                        <span>AI Studio</span>
+                    </div>
+                    <div class="logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT"><span>ChatGPT</span></div>
+                    <div class="logo-item">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="rgba(197,160,89,0.15)"/>
+                            <text x="50%" y="38%" dominant-baseline="middle" text-anchor="middle" font-size="10" font-family="serif" font-weight="700" fill="#d4a96a">&#x25C9;</text>
+                            <text x="50%" y="68%" dominant-baseline="middle" text-anchor="middle" font-size="8" font-family="Inter,sans-serif" font-weight="600" fill="#c5a059">claude</text>
+                        </svg>
+                        <span>Claude.ai</span>
+                    </div>
+                    <div class="logo-item">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="rgba(197,160,89,0.15)"/>
+                            <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="11" font-family="Inter,sans-serif" font-weight="800" fill="#c5a059">RAG</text>
+                        </svg>
+                        <span>RAG</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skills-grid">
+                <div class="glass-card skill-category reveal">
+                    <h4>Azure & Cloud AI</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Azure OpenAI</span>
+                        <span class="skill-tag">Azure AI Search</span>
+                        <span class="skill-tag">Azure AI Studio</span>
+                        <span class="skill-tag">Speech-to-Text/TTS</span>
+                        <span class="skill-tag">Container Apps</span>
+                        <span class="skill-tag">Vertex AI Vector Search</span>
+                    </div>
+                </div>
+                <div class="glass-card skill-category reveal">
+                    <h4>Generative AI & LLMs</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">LangChain</span>
+                        <span class="skill-tag">LangGraph</span>
+                        <span class="skill-tag">LlamaIndex</span>
+                        <span class="skill-tag">Hugging Face</span>
+                        <span class="skill-tag">Haystack</span>
+                        <span class="skill-tag">Ollama</span>
+                        <span class="skill-tag">RAG</span>
+                        <span class="skill-tag">Agentic Workflows</span>
+                    </div>
+                </div>
+                <div class="glass-card skill-category reveal">
+                    <h4>Languages & Frameworks</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">Django</span>
+                        <span class="skill-tag">FastAPI</span>
+                        <span class="skill-tag">Flask</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">HTML/CSS/Bootstrap</span>
+                    </div>
+                </div>
+                <div class="glass-card skill-category reveal">
+                    <h4>Vector & Graph Data</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">ChromaDB</span>
+                        <span class="skill-tag">Pinecone</span>
+                        <span class="skill-tag">Neo4j</span>
+                        <span class="skill-tag">MongoDB</span>
+                        <span class="skill-tag">MySQL/MariaDB</span>
+                        <span class="skill-tag">SQL Server</span>
+                    </div>
+                </div>
+                <div class="glass-card skill-category reveal">
+                    <h4>Infrastructure & DevOps</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">Terraform</span>
+                        <span class="skill-tag">Apache Airflow</span>
+                        <span class="skill-tag">CI/CD</span>
+                        <span class="skill-tag">Cloud Build</span>
+                    </div>
+                </div>
+                <div class="glass-card skill-category reveal">
+                    <h4>Speech & Multimodal AI</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Whisper</span>
+                        <span class="skill-tag">TorToiSe TTS</span>
+                        <span class="skill-tag">Coqui TTS</span>
+                        <span class="skill-tag">Voice Cloning</span>
+                        <span class="skill-tag">Stable Diffusion XL</span>
+                        <span class="skill-tag">CLIP-ViT</span>
+                    </div>
+                </div>
+                <div class="glass-card skill-category reveal">
+                    <h4>Zoho Platform</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Zoho One</span>
+                        <span class="skill-tag">Zoho CRM</span>
+                        <span class="skill-tag">Zoho Creator</span>
+                        <span class="skill-tag">Zoho Books</span>
+                        <span class="skill-tag">Deluge Scripting</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. EXPERIENCE TIMELINE -->
+        <section class="section reveal" id="experience">
+            <h2 class="section-title">Work Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-date">July 2025 – July 2026</div>
+                    <div class="glass-card">
+                        <h3>AI Full-Stack Engineer</h3>
+                        <p style="color:var(--accent); font-weight: 500;">IMACH.AI</p>
+                        <ul>
+                            <li>Designed a hybrid-retrieval chatbot combining Azure AI Search, Neo4j knowledge graph, and MongoDB metadata lookups, integrated with LangGraph/LangFuse — improving answer accuracy by 35% over standard RAG.</li>
+                            <li>Built LLM-powered backend services with FastAPI, applying structured prompt engineering to reduce hallucinations.</li>
+                            <li>Engineered hybrid rejection pipeline (semantic search + GPU inference) reducing false positives by 42% at <800ms latency.</li>
+                            <li>Optimized LLM inference via dynamic batching and FlashAttention-2, cutting per-token cost by 45-50% and improving GPU throughput ~3x.</li>
+                            <li>Delivered a real-time speech-to-speech voice assistant (Whisper, TorToiSe) with sub-800ms latency.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="timeline-item reveal">
+                    <div class="timeline-date">Dec 2024 – June 2025</div>
+                    <div class="glass-card">
+                        <h3>Software Developer</h3>
+                        <p style="color:var(--accent); font-weight: 500;">Altos Technologies</p>
+                        <ul>
+                            <li>Developed and maintained dynamic, database-driven web applications end-to-end using Python and Django.</li>
+                            <li>Designed and optimized database models (MySQL/MariaDB) and integrated payment gateways.</li>
+                            <li>Implemented secure authentication and responsive cross-browser/mobile-compatible UI.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="timeline-item reveal">
+                    <div class="timeline-date">May 2024 – Nov 2024</div>
+                    <div class="glass-card">
+                        <h3>Software Developer</h3>
+                        <p style="color:var(--accent); font-weight: 500;">Horeca Host (Dubai — Remote, Freelance)</p>
+                        <ul>
+                            <li>Built customized business applications on Zoho One (CRM, Creator, Books) to automate hospitality operations.</li>
+                            <li>Wrote Deluge scripts for custom functions, workflow automation, and third-party API integrations.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. FEATURED PROJECTS -->
+        <section class="section reveal" id="projects-section">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+
+                <!-- Posed.io -->
+                <div class="glass-card project-card reveal">
+                    <div class="project-img-wrap">
+                        <img src="img2/project-posed-io.jpg" alt="Posed.io — AI Imaging Platform" loading="lazy">
+                    </div>
+                    <div class="project-body">
+                        <h3>Posed.io — AI Imaging Platform</h3>
+                        <p>Led an AI imaging system processing 10M+ images/day using Stable Diffusion + CLIP. Applied ONNX/TFLite quantization at sub-8ms latency on T4 GPUs.</p>
+                        <div class="project-tags">
+                            <span class="skill-tag">Stable Diffusion</span>
+                            <span class="skill-tag">CLIP</span>
+                            <span class="skill-tag">ONNX/TFLite</span>
+                            <span class="skill-tag">T4 GPU</span>
+                        </div>
+                        <p class="impact-line">⚡ Cut manual post-production by 70%, reduced cloud costs by 60%.</p>
+                    </div>
+                </div>
+
+                <!-- Inventory RAG -->
+                <div class="glass-card project-card reveal">
+                    <div class="project-img-wrap">
+                        <img src="img2/project-inventory-rag.png" alt="Next-Gen Inventory Management with RAG" loading="lazy">
+                    </div>
+                    <div class="project-body">
+                        <h3>Next-Gen Inventory Management with RAG</h3>
+                        <p>Deployed a RAG chatbot over 100K+ inventory, supplier, and procurement records using OpenAI GPT-4, LangChain, Pinecone, FastAPI, and Docker.</p>
+                        <div class="project-tags">
+                            <span class="skill-tag">GPT-4</span>
+                            <span class="skill-tag">LangChain</span>
+                            <span class="skill-tag">Pinecone</span>
+                            <span class="skill-tag">FastAPI</span>
+                        </div>
+                        <p class="impact-line">⚡ Reduced supply chain search time by 60% with grounded responses.</p>
+                    </div>
+                </div>
+
+                <!-- VendData -->
+                <div class="glass-card project-card reveal">
+                    <div class="project-img-wrap">
+                        <img src="img2/project-venddata.jpg" alt="VendData — Smart Vending Data Solutions" loading="lazy">
+                    </div>
+                    <div class="project-body">
+                        <h3>VendData System</h3>
+                        <p>Web-based vending machine monitoring platform for tracking machine performance, inventory, and operational data. Contributed to backend and data management.</p>
+                        <div class="project-tags">
+                            <span class="skill-tag">Django</span>
+                            <span class="skill-tag">Real-Time Analytics</span>
+                            <span class="skill-tag">Data Dashboards</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://venddata.viennavending.com" target="_blank" class="btn btn-outline">View Live</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KTCC Finance -->
+                <div class="glass-card project-card reveal">
+                    <div class="project-img-wrap">
+                        <img src="img2/project-ktcc-finance.png" alt="KTCC Gulf Finance Management System" loading="lazy">
+                    </div>
+                    <div class="project-body">
+                        <h3>KTCC Finance Management System</h3>
+                        <p>A modern, secure finance management platform for KTCC Gulf — handling financial operations, records, and authentication. Built with React, Node.js, MongoDB, and AWS.</p>
+                        <div class="project-tags">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">MongoDB</span>
+                            <span class="skill-tag">AWS</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://finance.ktccgulf.in/login" target="_blank" class="btn btn-outline">View Live</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ASK Logikart -->
+                <div class="glass-card project-card reveal">
+                    <div class="project-img-wrap logo-style">
+                        <img src="img2/project-ask-logikart.png" alt="ASK Logikart — Logistics Platform" loading="lazy">
+                    </div>
+                    <div class="project-body">
+                        <h3>ASK Logikart</h3>
+                        <p>A logistics and delivery management platform for smarter operations — real-time tracking, seamless shipment management, and data-driven decision making.</p>
+                        <div class="project-tags">
+                            <span class="skill-tag">Logistics</span>
+                            <span class="skill-tag">Web Platform</span>
+                            <span class="skill-tag">Real-Time Tracking</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://leeyazmohamed.github.io/ASK-Logikar/" target="_blank" class="btn btn-outline">View Live</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. AI ENGINEERING SHOWCASE -->
+        <section class="section reveal" id="ai-showcase">
+            <h2 class="section-title">AI Engineering Showcase</h2>
+            <div class="marquee-wrapper">
+                <div class="marquee-content">
+                    <!-- Original Items -->
+                    <div class="glass-card">
+                        <h3 style="color:var(--accent);">Hybrid RAG Architecture</h3>
+                        <p>Combining Vector Search with Knowledge Graphs (Neo4j) to build stateful, highly-grounded retrieval architectures that outperform standard RAG approaches by significant margins.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="color:var(--accent);">Agentic Workflows</h3>
+                        <p>Orchestrating multi-agent systems using LangGraph and LangFuse for observable, step-by-step reasoning, memory retention, and dynamic tool execution.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="color:var(--accent);">LLM Inference Optimization</h3>
+                        <p>Accelerating model serving using structured pruning, dynamic batching, FlashAttention-2, and AWQ quantization to maximize GPU throughput.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="color:var(--accent);">Speech & Multimodal AI</h3>
+                        <p>Building real-time speech-to-speech pipelines utilizing Whisper and TorToiSe TTS with sub-800ms latencies for natural conversational voice interfaces.</p>
+                    </div>
+                    <!-- Duplicated Items for Seamless Loop -->
+                    <div class="glass-card">
+                        <h3 style="color:var(--accent);">Hybrid RAG Architecture</h3>
+                        <p>Combining Vector Search with Knowledge Graphs (Neo4j) to build stateful, highly-grounded retrieval architectures that outperform standard RAG approaches by significant margins.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="color:var(--accent);">Agentic Workflows</h3>
+                        <p>Orchestrating multi-agent systems using LangGraph and LangFuse for observable, step-by-step reasoning, memory retention, and dynamic tool execution.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="color:var(--accent);">LLM Inference Optimization</h3>
+                        <p>Accelerating model serving using structured pruning, dynamic batching, FlashAttention-2, and AWQ quantization to maximize GPU throughput.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="color:var(--accent);">Speech & Multimodal AI</h3>
+                        <p>Building real-time speech-to-speech pipelines utilizing Whisper and TorToiSe TTS with sub-800ms latencies for natural conversational voice interfaces.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. EDUCATION -->
+        <section class="section reveal" id="education">
+            <h2 class="section-title">Education</h2>
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <div class="glass-card reveal" style="width: 100%; max-width: 600px;">
+                    <h4 style="color:var(--accent); margin-bottom: 15px; text-align: center;">Academic Background</h4>
+                    <h3 style="font-size: 1.3rem;">Bachelor of Computer Application (BCA)</h3>
+                    <p>The American College, Madurai<br>2021 – 2024 | GPA: 6.5</p>
+                    <hr style="border:0; border-top: 1px solid var(--glass-border); margin: 25px 0;">
+                    <h3 style="font-size: 1.3rem;">Higher Secondary Course (+2)</h3>
+                    <p>Mary Ann Matric Hr Sec School, Madurai<br>2020 – 2021 | 79.00%</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 8. CONTACT SECTION -->
+        <section class="section reveal" id="contact" style="margin-bottom: 10vh;">
+            <h2 class="section-title">Let's Connect</h2>
+            <div class="contact-info">
+                <p style="font-size: 1.5rem; font-family: var(--font-display); font-weight: 600; color: #fff; margin-bottom: 10px;">Leeyaz Mohamed K</p>
+                <p style="color: var(--accent); margin-bottom: 20px;">AI Full-Stack Engineer</p>
+                <div style="margin-top: 20px; font-size: 1.1rem;">
+                    <a href="mailto:leeyazm@gmail.com">leeyazm@gmail.com</a> •
+                    <a href="tel:+918778156877">+91-8778156877</a> •
+                    <a href="https://linkedin.com/in/leeyazmohamed" target="_blank">LinkedIn</a>
+                </div>
+                <p style="margin-top: 20px; color: #888;">Dubai, UAE</p>
+            </div>
+            <div class="contact-container">
+                <div class="glass-card">
+                    <form id="contact-form">
+                        <input type="hidden" name="access_key" value="3f4b645d-4590-4ddf-9879-ae6f66a48162">
+                        
+                        <!-- Honeypot Spam Protection -->
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                        <!-- Web3Forms Auto-Responder Configuration -->
+                        <input type="hidden" name="autoresponse" value="Hi there,&#10;&#10;Thank you for reaching out and connecting with me through my website. I've successfully received your message.&#10;&#10;As an AI Full-Stack Engineer, I'm always excited to discuss innovative projects, technical collaborations, and potential opportunities. I'll personally review your message and get back to you with a detailed response shortly.&#10;&#10;Best regards,&#10;Leeyaz Mohamed&#10;AI Full-Stack Engineer&#10;&#10;email: leeyazm@gmail.com&#10;LinkedIn: https://linkedin.com/in/leeyazmohamed&#10;phone: +91-8778156877">
+                        <input type="hidden" name="subject" value="New Contact from Portfolio">
+                        <input type="hidden" name="from_name" value="Leeyaz Mohamed">
+                        
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required maxlength="50">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="5" placeholder="Your Message" required maxlength="1000"></textarea>
+                        </div>
+                        <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; position: relative; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s;">
+                            <span>Send Message</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                        
+                        <!-- Success/Error Message Container -->
+                        <div id="form-result" style="text-align: center; margin-top: 15px; font-weight: 500; display: none; padding: 12px; border-radius: 8px; transition: all 0.3s;"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script>
+        // --- Smooth Scrolling (Lenis) ---
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            smooth: true
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Handle anchor links with offset for navbar
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.startsWith('#')) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        lenis.scrollTo(target, { offset: -80 });
+                    }
+                }
+            });
+        });
+
+        // --- Canvas Animation Logic ---
+        const canvas = document.getElementById('animation-canvas');
+        const context = canvas.getContext('2d');
+
+        const frameCount = 80;
+        const currentFrameInfo = index => {
+            return `img1/ezgif-frame-${index.toString().padStart(3, '0')}.jpg`;
+        };
+
+        // Preload images to ensure smooth playback
+        const images = [];
+        let imagesLoaded = 0;
+        const firstImg = new Image();
+        
+        const preloadImages = () => {
+            for (let i = 1; i <= frameCount; i++) {
+                const url = currentFrameInfo(i);
+                const img = new Image();
+                img.src = url;
+                img.onload = () => {
+                    images[i - 1] = img; // 0-indexed array
+                    imagesLoaded++;
+                    if (i === 1) {
+                        firstImg.src = url;
+                    }
+                };
+            }
+        };
+
+        const updateCanvasSize = () => {
+            // High DPI support for crisp images
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+            context.scale(dpr, dpr);
+            
+            // Enable high-quality image smoothing for clearer rendering
+            context.imageSmoothingEnabled = true;
+            context.imageSmoothingQuality = 'high';
+            
+            // Re-render current frame on resize
+            if (images.length > 0 && images[lastRenderedIndex]) {
+                renderFrame(images[lastRenderedIndex]);
+            } else if (firstImg.complete && firstImg.naturalWidth > 0) {
+                renderFrame(firstImg);
+            }
+        }
+
+        firstImg.onload = () => {
+            updateCanvasSize();
+            renderFrame(firstImg); // Initial render
+        };
+
+        let lastRenderedIndex = 0;
+
+        const renderFrame = (imgToRender) => {
+            if (!imgToRender || !imgToRender.complete || imgToRender.naturalWidth === 0) return;
+            
+            const canvasWidth = window.innerWidth;
+            const canvasHeight = window.innerHeight;
+            
+            // Calculate scale to cover entire screen (object-fit: cover equivalent)
+            const scale = Math.max(canvasWidth / imgToRender.width, canvasHeight / imgToRender.height);
+            
+            const x = (canvasWidth / 2) - (imgToRender.width / 2) * scale;
+            const y = (canvasHeight / 2) - (imgToRender.height / 2) * scale;
+            
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.drawImage(imgToRender, x, y, imgToRender.width * scale, imgToRender.height * scale);
+        };
+
+        window.addEventListener('resize', updateCanvasSize, { passive: true });
+
+        let targetFrameIndex = 0;
+        let currentFrameIndex = 0;
+
+        // Map the entire document scroll height to the 240 frames
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const maxScrollTop = document.documentElement.scrollHeight - window.innerHeight;
+            
+            if (maxScrollTop <= 0) return;
+            
+            const scrollFraction = scrollTop / maxScrollTop;
+            
+            // Calculate which frame to show
+            let frameIndex = Math.min(
+                frameCount - 1,
+                Math.round(scrollFraction * frameCount)
+            );
+            
+            // Ensure frameIndex is within bounds
+            if(frameIndex < 0) frameIndex = 0;
+            if(frameIndex >= frameCount) frameIndex = frameCount - 1;
+
+            targetFrameIndex = frameIndex;
+        }, { passive: true });
+
+        // Smoothly interpolate the frame index
+        const updateAnimation = () => {
+            currentFrameIndex += (targetFrameIndex - currentFrameIndex) * 0.15;
+            
+            const roundedIndex = Math.round(currentFrameIndex);
+            
+            // Only re-render if the rounded index actually changed
+            if (lastRenderedIndex !== roundedIndex) {
+                lastRenderedIndex = roundedIndex;
+                if (images[roundedIndex] && images[roundedIndex].complete) {
+                    renderFrame(images[roundedIndex]);
+                }
+            }
+            
+            requestAnimationFrame(updateAnimation);
+        };
+
+        requestAnimationFrame(updateAnimation);
+
+        preloadImages();
+
+        // --- Scroll Reveal Logic for Content ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Trigger reveal for elements initially in view
+        setTimeout(() => {
+            window.dispatchEvent(new Event('scroll'));
+        }, 150);
+
+        // --- Navbar Scroll Logic ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // --- Mobile Menu Toggle ---
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+            // Close menu when a link is clicked
+            document.querySelectorAll('.nav-links li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+        }
+        
+        // --- Contact Form Submission Logic ---
+        const contactForm = document.getElementById('contact-form');
+        const formResult = document.getElementById('form-result');
+        const submitBtn = document.getElementById('submit-btn');
+        let isSubmitting = false;
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Prevent duplicate submissions
+                if (isSubmitting) return; 
+                isSubmitting = true;
+
+                // Loading state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Sending...</span>';
+                submitBtn.style.opacity = '0.7';
+                submitBtn.style.cursor = 'not-allowed';
+
+                // Hide previous result
+                formResult.style.display = 'none';
+                
+                const formData = new FormData(contactForm);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
+
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: json
+                })
+                .then(async (response) => {
+                    let json = await response.json();
+                    if (response.status == 200) {
+                        formResult.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 5px;"></i>Message sent successfully! Please check your email for confirmation.';
+                        formResult.style.color = "#4caf50";
+                        formResult.style.background = "rgba(76, 175, 80, 0.1)";
+                        formResult.style.border = "1px solid rgba(76, 175, 80, 0.3)";
+                        formResult.style.display = 'block';
+                        contactForm.reset();
+                    } else {
+                        console.log(response);
+                        formResult.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i>' + (json.message || "Something went wrong!");
+                        formResult.style.color = "#f44336";
+                        formResult.style.background = "rgba(244, 67, 54, 0.1)";
+                        formResult.style.border = "1px solid rgba(244, 67, 54, 0.3)";
+                        formResult.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    formResult.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i>Something went wrong! Please try again.';
+                    formResult.style.color = "#f44336";
+                    formResult.style.background = "rgba(244, 67, 54, 0.1)";
+                    formResult.style.border = "1px solid rgba(244, 67, 54, 0.3)";
+                    formResult.style.display = 'block';
+                })
+                .finally(() => {
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span>Send Message</span><i class="fas fa-paper-plane"></i>';
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.cursor = 'pointer';
+                    isSubmitting = false;
+                    
+                    // Auto-hide success message after 8 seconds
+                    setTimeout(() => {
+                        formResult.style.display = "none";
+                    }, 8000);
+                });
+            });
+        }
+        
+    </script>
+</body>
+</html>
